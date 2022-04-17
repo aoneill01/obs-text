@@ -2,27 +2,22 @@ import React, { useEffect, useState } from "react";
 import gsap from "gsap";
 
 type Props = {
-  width?: number;
-  height?: number;
   message: string;
 };
 
 const range = (start: number, stop: number, step: number) =>
   Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
 
-const Overlay = ({ width = 1450, height = 80 }: Props) => {
+const Overlay = ({ message }: Props) => {
+  const margin = 24;
+  const width = 1920 + margin * 2;
+  const height = 80 + margin * 2;
   const verticalBarWidth = 10;
-  const horizontalBarWidth = width - 2 * verticalBarWidth;
-  const layers = 3;
-
-  const [message, setMessage] = useState("");
+  const horizontalBarWidth = width - 2 * verticalBarWidth - margin * 2;
+  const barHeight = height - 2 * margin;
+  const layers = 4;
 
   useEffect(() => {
-    var text =
-      new URLSearchParams(window.location.search).get("text") ??
-      "This is a sample message";
-    setMessage(text);
-
     const tl = gsap.timeline({ repeat: 1, yoyo: true });
     tl.delay(0.5);
 
@@ -39,24 +34,39 @@ const Overlay = ({ width = 1450, height = 80 }: Props) => {
       x: `+=${horizontalBarWidth}`,
     });
     tl.set({}, {}, 5);
+
+    return () => {
+      tl.kill();
+    };
   }, []);
 
   return (
     <svg
-      width={width}
-      height={height}
-      style={{ position: "fixed", bottom: 24, left: 24 }}
+      viewBox={`0 0 ${width} ${height}`}
+      style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        width: "100vw",
+        aspectRatio: `${width} / ${height}`,
+      }}
     >
       <mask id="mask">
         <rect
-          x={verticalBarWidth * 2}
+          x={verticalBarWidth * 2 + margin}
           width={horizontalBarWidth}
           height={height}
           fill="white"
         />
       </mask>
       <g id="verticalBar" transform={`translate(0, ${height})`}>
-        <rect width={verticalBarWidth} height={height} fill="#279ce2" />
+        <rect
+          x={margin}
+          y={margin}
+          width={verticalBarWidth}
+          height={barHeight}
+          fill="#279ce2"
+        />
       </g>
       <g mask="url(#mask)">
         {range(1, layers, 1).map((id) => (
@@ -69,13 +79,14 @@ const Overlay = ({ width = 1450, height = 80 }: Props) => {
           >
             <rect
               id="rect"
-              x="0"
+              x={margin - 1}
+              y={margin}
               width={horizontalBarWidth}
-              height={height}
-              fill="#279ce277"
+              height={barHeight}
+              fill="#279ce255"
             />
             {id === layers && (
-              <text x="24" y="57" fontSize="48" fill="white">
+              <text x={margin + 24} y={margin + 57} fontSize="48" fill="white">
                 {message}
               </text>
             )}

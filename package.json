@@ -18,6 +18,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "evergreen-ui": "^6.9.6",
     "gatsby": "^4.12.1",
     "gatsby-plugin-emotion": "^7.12.1",
     "gsap": "^3.10.3",
