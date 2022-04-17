@@ -3,12 +3,20 @@ import gsap from "gsap";
 
 type Props = {
   message: string;
+  backgroundColor: string;
+  fontColor: string;
+  repeat?: boolean;
 };
 
 const range = (start: number, stop: number, step: number) =>
   Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step);
 
-const Overlay = ({ message }: Props) => {
+const Overlay = ({
+  message,
+  backgroundColor,
+  fontColor,
+  repeat = false,
+}: Props) => {
   const margin = 24;
   const width = 1920 + margin * 2;
   const height = 80 + margin * 2;
@@ -18,8 +26,8 @@ const Overlay = ({ message }: Props) => {
   const layers = 4;
 
   useEffect(() => {
-    const tl = gsap.timeline({ repeat: 1, yoyo: true });
-    tl.delay(0.5);
+    const tl = gsap.timeline({ repeat: repeat ? -1 : 1, yoyo: true });
+    tl.set({}, {}, 0.5);
 
     tl.to("#verticalBar", {
       duration: 0.3,
@@ -39,6 +47,7 @@ const Overlay = ({ message }: Props) => {
       tl.kill();
     };
   }, []);
+  console.log(`${backgroundColor}55`);
 
   return (
     <svg
@@ -65,7 +74,7 @@ const Overlay = ({ message }: Props) => {
           y={margin}
           width={verticalBarWidth}
           height={barHeight}
-          fill="#279ce2"
+          fill={backgroundColor}
         />
       </g>
       <g mask="url(#mask)">
@@ -83,10 +92,15 @@ const Overlay = ({ message }: Props) => {
               y={margin}
               width={horizontalBarWidth}
               height={barHeight}
-              fill="#279ce255"
+              fill={`${backgroundColor}55`}
             />
             {id === layers && (
-              <text x={margin + 24} y={margin + 57} fontSize="48" fill="white">
+              <text
+                x={margin + 24}
+                y={margin + 57}
+                fontSize="48"
+                fill={fontColor}
+              >
                 {message}
               </text>
             )}
