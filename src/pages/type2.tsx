@@ -1,32 +1,40 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import Overlay1 from "../components/overlay1";
+import Overlay2 from "../components/overlay2";
 
 const defaultMessage = "";
-const defaultBackgroundColor = "#279ce2";
+const defaultBackgroundColor1 = "#4aaaa7";
+const defaultBackgroundColor2 = "#000000";
 const defaultFontColor = "#ffffff";
 
 const IndexPage = () => {
   const [message, setMessage] = useState(defaultMessage);
-  const [backgroundColor, setBackgroundColor] = useState(
-    defaultBackgroundColor
+  const [backgroundColor1, setBackgroundColor1] = useState(
+    defaultBackgroundColor1
+  );
+  const [backgroundColor2, setBackgroundColor2] = useState(
+    defaultBackgroundColor2
   );
   const [fontColor, setFontColor] = useState(defaultFontColor);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     setMessage(searchParams.get("message") ?? defaultMessage);
-    setBackgroundColor(
-      searchParams.get("backgroundColor") ?? defaultBackgroundColor
+    setBackgroundColor1(
+      searchParams.get("backgroundColor1") ?? defaultBackgroundColor1
+    );
+    setBackgroundColor2(
+      searchParams.get("backgroundColor2") ?? defaultBackgroundColor2
     );
     setFontColor(searchParams.get("fontColor") ?? defaultFontColor);
   }, []);
 
   return (
     <Layout>
-      <Overlay1
+      <Overlay2
         message={message}
-        backgroundColor={backgroundColor}
+        backgroundColor1={backgroundColor1}
+        backgroundColor2={backgroundColor2}
         fontColor={fontColor}
       />
     </Layout>

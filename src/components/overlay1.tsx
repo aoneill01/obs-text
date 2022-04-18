@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import gsap from "gsap";
+import "./overlay1.css";
 
 type Props = {
   message: string;
@@ -18,11 +19,11 @@ const Overlay = ({
   repeat = false,
 }: Props) => {
   const margin = 24;
-  const width = 1920 + margin * 2;
-  const height = 80 + margin * 2;
+  const barHeight = 80;
+  const width = 1920;
+  const height = barHeight + margin * 2;
   const verticalBarWidth = 10;
   const horizontalBarWidth = width - 2 * verticalBarWidth - margin * 2;
-  const barHeight = height - 2 * margin;
   const layers = 4;
 
   useEffect(() => {
@@ -41,13 +42,12 @@ const Overlay = ({
       ease: "power3.out",
       x: `+=${horizontalBarWidth}`,
     });
-    tl.set({}, {}, 5);
+    tl.set({}, {}, 4);
 
     return () => {
       tl.kill();
     };
   }, []);
-  console.log(`${backgroundColor}55`);
 
   return (
     <svg
@@ -100,6 +100,7 @@ const Overlay = ({
                 y={margin + 57}
                 fontSize="48"
                 fill={fontColor}
+                fontFamily="Roboto Slab, serif"
               >
                 {message}
               </text>
